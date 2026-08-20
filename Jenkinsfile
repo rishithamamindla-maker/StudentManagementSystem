@@ -1,8 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven-3.9.16'
+    environment {
+        MAVEN_HOME = 'C:\\Users\\rishi\\Downloads\\apache-maven-3.9.16-bin\\apache-maven-3.9.16'
+        PATH = "${MAVEN_HOME}\\bin;${env.PATH}"
     }
 
     stages {
