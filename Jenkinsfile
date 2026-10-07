@@ -31,5 +31,18 @@ pipeline {
                 bat 'mvn package -DskipTests'
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                bat 'docker build -t student-management:latest .'
+            }
+        }
+
+        stage('Docker Run') {
+            steps {
+                bat 'docker rm -f student-management-container || exit 0'
+                bat 'docker run --name student-management-container --network student-network student-management:latest'
+            }
+        }
     }
 }
