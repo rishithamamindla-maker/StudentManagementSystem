@@ -1,48 +1,35 @@
 package com.student;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class StudentService {
 
-    private List<Student> students = new ArrayList<>();
-
-    public void addStudent(Student student) {
-        students.add(student);
-        System.out.println("Student added successfully!");
-    }
-
     public void viewStudents() {
-        if (students.isEmpty()) {
-            System.out.println("No students found.");
-            return;
-        }
 
-        for (Student student : students) {
-            System.out.println(student);
-        }
-    }
+        String query = "SELECT * FROM students";
 
-    public void searchStudent(int id) {
-        for (Student student : students) {
-            if (student.getId() == id) {
-                System.out.println(student);
-                return;
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                System.out.println(
+                    rs.getString("StudentID") + " | " +
+                    rs.getString("FirstName") + " | " +
+                    rs.getString("LastName") + " | " +
+                    rs.getString("Email") + " | " +
+                    rs.getString("Department") + " | " +
+                    rs.getDouble("CGPA")
+                );
             }
+
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        System.out.println("Student not found.");
-    }
-
-    public void deleteStudent(int id) {
-        for (Student student : students) {
-            if (student.getId() == id) {
-                students.remove(student);
-                System.out.println("Student deleted successfully!");
-                return;
-            }
-        }
-
-        System.out.println("Student not found.");
     }
 }
